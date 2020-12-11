@@ -5,7 +5,7 @@ This project is a collaborative effort between the California Department of Fish
 
 ## Project Contacts
 
-Jason DuBois (CDFW) jason.dubois@wildlife.ca.gov
+James Hobbs CDFW James.Hobbs@wildlife.ca.gov
 
 ## Project Disclaimer
 
