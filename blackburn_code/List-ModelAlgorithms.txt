@@ -1,0 +1,24 @@
+Below is an initial list of algorithms used in the model. This list is just an off-the-top-of-my-head list and may not include everything the model needs. The idea is to eventually take these algorithms and create custom functions.
+
+--------------------------------------------------------------------------------------------
+
+mortality
+
+exploitation (per literature, and adjusting for tag loss, tag mortality, non-reporting)
+
+growth (per von Bertalanffy, and how employed in mortality - i.e., growth into & out of the slot limit)
+
+fecundity (use of devore-champman)
+
+selectivity (Millar code)
+
+age (age-length key, back calculation, etc.)
+
+maturity (probability of, etc.)
+
+matrix (design of leslie matrix)
+
+output (many!)
+
+more...
+

@@ -1,0 +1,38 @@
+
+Notes with Shannon (meeting 03-08-18 @ 1345 Stockton)
+
+Used CDFW 2014-2016 (n= ~1000), of these 374 aged using fin rays
+(Shannon will send this data - the age length stuff)
+
+
+initial age dist -
+binned by length (5 cm bins) then applied alkey (n=374), got proportion in each age category, then scaled to 48K
+
+
+
+prob of survival
+age 0 - age 2 --> from literature
+
+age 3 - age 9 --> applied conditional natural mortaility, see Ricker page 11 (S = 0.835265413)
+age 10 - age 15 --> chapman robson with age9 (ages 9:19), s/b 0.7108262 despite data in prob_survival_obs
+age 16+ --> same as age3-age9
+
+prob_survival_obs is just a starting point the stochastic element of the model will "move" survival rate up or down accordingly.
+
+prob of reproduction
+
+used chapman data from digitized graph
+running glm as binomial (either mature or not)
+Shannon will send data
+
+need to be mature then multiplied by 0.10 or 0.15 or 0.25 (for different periods)
+
+
+Post breeding census, not pre-breeding (perhaps look into pre-breeding census)
+
+
+
+number of eggs 
+equation from devore 
+
+

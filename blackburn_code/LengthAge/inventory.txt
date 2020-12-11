@@ -1,0 +1,30 @@
+From:	Blackburn, Shannon (blac2622@vandals.uidaho.edu) 
+<blac2622@vandals.uidaho.edu>
+Sent:	Wednesday, April 11, 2018 4:46 PM
+To:	DuBois, Jason@Wildlife
+Subject:	inventory
+Attachments:	CDFW_WST.xlsx
+
+Follow Up Flag:	Follow up
+Flag Status:	Flagged
+
+Hello, 
+
+I went through and triple-checked everything. The issues I found are in the second spreadsheet labeled 
+issues. Hopefully everything makes sense. There are two fish I wasn’t able to consolidated. In our ageing 
+database, I haven’t matched up fish 51 (fork length 99 cm, captured 8/7/14) and fish 3112 (fork length 
+98 cm, captured 8/19/15). 
+
+For the couple fork lengths that did not match, I just went with what was in the CDFW sturgeon 
+database for now as I do not have the datasheets. It was usually just a cm off or so. 
+
+Shannon Blackburn
+M.S. graduate student
+University of Idaho
+College of Natural Resources
+Fish and Wildlife Sciences
+875 Perimeter Drive 
+Moscow, Idaho 83844
+Office: CNR 109
+Phone: 206-799-0149
+

@@ -1,0 +1,346 @@
+---
+title: 'White Sturgeon Pop Model: A Brief Overview'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_knit$set(root.dir = "U:/SportFish/Staff Files/JDuBois/0_RProjects/SturgeonPopModel")
+
+knitr::opts_chunk$set(rows.print = 5)
+
+```
+
+```{r soure-files, echo=FALSE}
+
+source(file = "source/functions-model_simsurv.R")
+
+```
+
+##Introduction
+S. Blackburn (Univ. of Idaho, contracted through CDFW) developed a computational model to understand San Francisco Estuary (SFE) White Sturgeon population dynamics. The model assess populations changes ($\lambda$) over varying levels of exploitation ($\mu$; harvest rate) given current and possible size limits.
+
+Herein we demonstrate model operation using (for simplicity) fixed (i.e., assumptions cannot be modified) data inputs. (In the future, we'll implement functionality to allow for some data input manipulation.) The results as presented here project $\lambda$ --- under current fishing regulations --- over 20 years using CDFW mark-recapture data 2014-2016. These data were adjusted for gear selectivity using methods written by [Millar](https://www.stat.auckland.ac.nz/~millar/selectware/RNext/). The CDFW used modified trammel nets with inner webbing sizes of 6", 7", and 8" mesh. Each trammel net typically was configured with 2x8" panels, 1x6" panel, & 1x7" panel (i.e., 8" mesh was fished at twice more the effort than the 6" or 7" mesh; one panel is 150' in length).
+
+The fixed data inputs carry the assumptions below.  
+1. 15% of females spawn in a given year  
+2. for exploitation ($\mu$)  
+    - 100% reporting of highest \$ tag (i.e., \$150)  
+    - tag loss at 10% & tagging mortality at 1%  
+3. spawning periodicity & egg to age-1 mortality rates from older (20+ years) literature  
+4. initial abundance (of total population) set at 48,000  
+5. female:male ratio 50:50  
+
+##Load Libraries
+Model algorithms and processes were written using R (unclear which version but likely 3.4.x). Additionally, the model uses three (3) functions from the `popbio` package (version 2.4.3).
+
+[`betaval()`](https://www.rdocumentation.org/packages/popbio/versions/2.4.3/topics/betaval)  
+[`stretchbetaval()`](https://www.rdocumentation.org/packages/popbio/versions/2.4.3/topics/stretchbetaval)  
+[`pop.projection()`](https://www.rdocumentation.org/packages/popbio/versions/2.4.3/topics/pop.projection)  
+
+```{r libs}
+
+library(popbio)
+library(ggplot2)
+
+```
+
+##Load Data
+For this purpose, we stored all model input data in a `.Rdata` file. Data sourced from S. Blackburn's file `corrected_transient_midfecund_current.R`. We load this here to being. Data are 20 observations (i.e., ages 0-19) by 2 or 3 variables (shown below in each section, 5 rows at a time).
+
+S. Blackburn created a separate `prob_survival_` dataframe for each level of $\mu$ (see below for all variable names). For convenience and neatness, we put these variables in a new environment (`prob_survival`), and then removed each from the Global environment. (Later, we'll build functionality so only one "prob_survival" variable is needed.)
+
+```{r load-data}
+
+load(file = "data/model/StartingData.RData")
+
+# putting all prob_survival dataframes in separate env for neatness
+prob_surv <- ls(pattern = "prob_survival")
+
+# naming for convenience later in the process (model)
+names(prob_surv) <- prob_surv
+
+prob_survival <- new.env()
+
+vapply(prob_surv, FUN = function(x) {
+  assign(x = x, value = get(x), envir = prob_survival)
+  rm(list = x, envir = .GlobalEnv)
+  x
+}, FUN.VALUE = character(1L), USE.NAMES = FALSE)
+
+```
+
+```{r init-age, echo=FALSE}
+
+# for consistency initial_age_dist can be a dataframe rather than a matrix
+initial_age_dist <- as.data.frame(initial_age_dist)
+
+```
+
+####initial_age_dist
+S. Blackburn assigned ages to non-aged fish (~650; using [`FSA::alkIndivAge()`](https://www.rforge.net/doc/packages/FSA/alkIndivAge.html)) using an age-length key made from ~350 aged fish. Data were corrected for gear selectivity, and then scaled to a starting abundance (N=`r format(initial_abundance, big.mark = ",")`). S. Blackburn used a log-linear model to estimate age-1 & age-2 abundance, and then multiplied values by 0.5 (for assumed M:F ratio of 50:50). Age-0 value derived from White Sturgeon (female) fecundity and abundance.
+
+Ages range (here & throughout the model) from `r paste(range(initial_age_dist[["age"]]), collapse = " to ")`. Variable `initial_age_dist` is --- by original design --- a matrix, but herein we've converted it to a dataframe for convenience and consistency.
+
+```{r age-dist, echo=FALSE}
+
+# str(initial_age_dist)
+# knitr::kable(initial_age_dist, format = "pandoc")
+initial_age_dist
+
+```
+
+####prob_survival_obs
+Data are probability of survival for each age. Survival probability calculated using Chapman-Robson peak+1 method and "[SE adjusted] for overdispersion (using chat variance inflation)." Age-0 through -2 values from extant literature.
+
+Many `prob_survival_<NAME>` dataframes are loaded into this session (below we use `prob_survival_obs` as an example). Each one considers the effects of exploitation ($\mu$; and increments by 0.01 from 0 to 0.30) for the cohort susceptible to harvest (i.e., ages 10-15, according to von Bertalanffy growth model). For all other age groups, survival probability remains constant irrespective of $\mu$. Reference to `_obs` indicates observed survival probabilities under current White Sturgeon harvest conditions (i.e., where $\mu$ ~0.13).
+
+```{r prob-surv, echo=FALSE}
+
+# str(prob_survival[["prob_survival_obs"]])
+# knitr::kable(prob_survival[["prob_survival_obs"]], format = "pandoc")
+prob_survival[["prob_survival_obs"]]
+
+```
+
+####prob_spawn
+Data generated using logistic regression on Chapman's (1989, doctoral thesis [I believe]) summarized data (i.e., percent of sexually mature females as a function of fork length [cm]). Standard errors (SE) were predicted from logistic model.
+
+Spawning (according to extant literature, Chapman et al. 1996) is not likely to occur prior to age 10. `prob_spawn` is created as such, where `prob` is 0 for ages 0-9.
+
+```{r prob-spawn, echo=FALSE}
+
+# str(prob_spawn)
+# knitr::kable(prob_spawn)
+prob_spawn
+
+```
+
+####number_eggs
+Data are number of eggs per age, derived from linear regression (fork length ~ number of eggs; linear model not shown here but starting data [Devore et al. 1995] are given below). SEs were predicted from the linear model. Again, 0s for ages 0-9. Length ~104 cm FL roughly equivalent to age-10.
+
+```{r num-eggs, echo=FALSE}
+
+# str(number_eggs)
+# knitr::kable(number_eggs, format = "pandoc")
+number_eggs
+
+```
+
+```{r eggs_dev-chap, echo=FALSE}
+
+eggs <- readRDS(file = "data/model/FecundityWST.rds")
+
+knitr::kable(
+  eggs[, 1:2],
+  format = "pandoc",
+  col.names = c("ForkLen", "NumOfEggs")
+)
+
+```
+
+##Model
+The process, as described below by S. Blackburn, is presented below. `A` refers to a Leslie female-based population matrix.
+
+> 1. Simulate Ai iid population matrices, i = 1:n, n is the number of simulations,
+>    where the random iid vital rates are drawn from the following distrubitions:
+>     i.  prob_survival ~ Beta(a, b) with a and b such that E(prob_survival) = mean, 
+>         and Var(prob_survival) = SE^2
+>     ia. include recruitment stochasticity (age-0 survival only)
+>     ii. prob_spawn ~ Beta(a, b) with a and b such that E(prob_spawn) = mean, 
+>         and Var(prob_spawn) = SE^2
+>    iii. number_eggs ~ StretchBeta(a, b, min, max) with same type of expectation
+>         and variance as above.  support = [min, max] = [0, 2* maxobs]
+>    Use functions betaval() and stretchbetaval() to generate from Beta and
+>    StretchBeta distributions, respectively, with the appropriate parameters.
+> 2. Assemble vital rates into post-breeding matrices. This means we include newborns (age-0) in our census, 
+>    they are 1st age class
+> 3. Use pop.projection() function to iterate each population j = 1:t times by
+>    multiplying matrix Ai by the population vector at time j. Because the same Ai
+>    will be used accross the t times, we are interested when t is small (to look
+>    at short-term changes in the population)  
+> 3a. Calculate observed lambda for each matrix at time t by comparing the population
+>    change from time t-1 to time t (which is already done by pop.proj in pop.changes)
+> 4. Calculate the mean log lambda for each Ai
+> 5. For the overall value, look at the geometric mean of the lambdas.
+
+Herein, we've created some custom functions (see [`functions-model_simsurv.R`](https://github.com/jasondubois/SturgeonPopModel/blob/master/source/functions-model_simsurv.R)) to simplify a bit this multi-stepped process.
+
+The model includes stochasticity, and as such we need to first set the number of iterations (`iters`). We can adjust this value accordingly, but for ease of demonstration we'll set it to 100 (for best results it should be upwards of 5K or more).
+
+```{r iter}
+
+iters <- 100
+# iters <- 5000
+
+```
+
+###Survival Rates
+For each `prob_survival_<NAME>` variable, we simulate (`n=iters`) survival rates (using mean [see `prob` field] & standard deviation [see `SE` field]) for each row (i.e., `age`). We do this using `popbio::betaval()` & the custom `SurvivalSims()`. 
+`prob_survival_obs` are the observed survival rates under current conditions (i.e., fishing regulations & exploitation). All others vary $\mu$ (from 0 [no $\mu$] to 0.30 or 30%).
+
+```{r surv-sims}
+
+# span = period (in years on average) of successful recruitment; e.g., 5 =
+# successful recruitment once every 5 years
+sims_survival <- SurvivalSims(
+  probSurv = prob_surv,
+  env = prob_survival,
+  iterations = iters,
+  span = 5
+)
+
+```
+
+###Spawning
+Here we simulate spawning (by `age`) using probability of spawning in `prob_spawn`. We do this using the custom `BetavalSims()`.
+
+```{r spawn-sims}
+
+# simulate probability of spawning
+sims_spawning <- BetavalSims(
+  data = prob_spawn,
+  mn = prob,
+  sdev = SE,
+  iterations = iters
+)
+
+```
+
+###Fecundity
+We first simulate the number of eggs (using custom `SBetavalSims()`), and then we calculate simulated fecundity. For now, we assume a sex ratio of 50%.
+
+```{r eggs_sims}
+
+# Simulate the number of eggs
+sims_num_eggs <- SBetavalSims(
+  data = number_eggs,
+  mn = count,
+  sdev = SE,
+  iterations = iters
+)
+
+```
+
+```{r fecund_sims}
+
+# assumed 50% sex ratio
+sex_ratio <- 0.5
+
+# Simulate fecundity rate from prob_spawning_sims and number_eggs_sims
+sims_fecundity <- sims_num_eggs * sims_spawning * sex_ratio   
+
+# if needed, we can dispose of sims_num_eggs & sims_spawning, as these variables
+# are not needed anymore & may consume memory
+
+# rm(sims_num_eggs, sims_spawning)
+
+```
+
+##Leslie Matrix & Model Results
+The crux of this model is a post-breeding female-based Leslie matrix. We create the matrix and get results using custom `GetLambda()`. Here is what S. Blackburn says about this step of the process (model).
+
+> W[hite Sturgeon] caught right AFTER (post) their "birthday" can contribute newborn (age 0) animals to next year's census by surviving to their next birthday, then reproducing ON that birthday. Ex: fecundity of 9-year-olds (10th fecundity row element in matrix) is: survival from 9-10 (S9, 10th survival element), times fecundity on 10th bday (f10, 11th repro element)
+
+Note: `GetLambda()` is a bit convoluted and is very slow when iterations increase. In future versions, we'll try to improve performance and readability.  
+
+Note: the `iterations` parameter in `GetLambda()` is the period (in years) over which population changes are projected. (For now, we've hard-coded this value, but in the future we will allow for variation.)
+
+```{r results-get}
+
+# get lambda for each level of exploitation & current observations
+results <- lapply(prob_surv, function(x) {
+  GetLambda(
+    data = prob_survival[[x]],
+    mn = prob,
+    sdev = SE,
+    fecundSims = sims_fecundity,
+    survSims = sims_survival[[x]],
+    n = initial_age_dist[["freq"]],
+    iterations = 20
+  )
+})
+
+# clean up for ease of display
+results <- do.call(what = rbind, args = results)
+
+results[["Level"]] <- vapply(
+  strsplit(rownames(results), split = "_"),
+  FUN = "[", 3,
+  FUN.VALUE = character(1L)
+)
+
+rownames(results) <- NULL
+
+```
+
+```{r results-display, echo=FALSE}
+
+knitr::kable(
+  x = results,
+  format = "pandoc"
+)
+
+```
+
+Plot of $\lambda_G$ (geometric mean) as a function of exploitation over 20 year period. A $\lambda$ of 1 is a stable population, below 1 is a declining population. Under current conditions, in 20 years our starting population (N=`r format(initial_abundance, big.mark = ",")`) will look something like the second plot below.
+
+```{r plot_mu, echo=FALSE}
+
+mu <- as.numeric(
+  vapply(
+    strsplit(results[["Level"]], split = "\\D"),
+    FUN = "[", 1,
+    FUN.VALUE = character(1L)
+  )
+)
+
+mu[results[["Level"]] == "nomu"] <- 0
+mu[results[["Level"]] == "obs"] <- 13
+
+results[["mu"]] <- mu / 100
+
+ggplot(data = results, mapping = aes(x = mu, y = MeanLambda)) +
+  geom_hline(yintercept = 1, colour = "orange2", size = 0.5, linetype = 2) +
+  geom_line() +
+  # labs(x = "Exploitation", y = "Lambda")
+  labs(x = "Exploitation", y = expression(lambda[G]))
+
+```
+
+```{r pop-20years, echo=FALSE}
+
+test <- function(x, l, n = 20) {
+  
+  val <- vector(mode = "numeric", length = n)
+  i <- 1
+  
+  while (n > 0) {
+    
+    val[i] <- x
+    
+    x <- x * l
+    n <- n - 1
+    i <- i + 1
+    
+  }
+  val
+}
+
+plot(
+  x = 1:20,
+  y = test(x = 48000, l = 0.97) / 1000,
+  type = "l",
+  xlab = "Year",
+  ylab = "Estimated population abundance (N) * 1000",
+  las = 1
+)
+
+```
+
+---
+ran: `r Sys.time()`  
+CDFW, Sportfish Unit

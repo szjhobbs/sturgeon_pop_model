@@ -1,0 +1,51 @@
+From:	Blackburn, Shannon (blac2622@vandals.uidaho.edu) 
+<blac2622@vandals.uidaho.edu>
+Sent:	Thursday, February 08, 2018 11:14 AM
+To:	DuBois, Jason@Wildlife
+Subject:	sorry to flood your inbox
+
+Here are some conversions between different estimates:
+
+Observed conditions w/selectivity correction
+Parameter
+Equation
+Estimate
+Z
+F + M
+0.2068
+S 
+e-Z
+0.8132
+A
+1-e-Z
+0.1868
+F
+µZ/A
+0.1510
+M
+Z-F
+0.0558
+v
+MA/Z
+0.0504
+cm
+1-e-M
+0.0542
+µ
+FA/Z
+0.1364
+cf
+1-e-F
+0.1402
+
+
+Shannon Blackburn
+M.S. graduate student
+University of Idaho
+College of Natural Resources
+Fish and Wildlife Sciences
+875 Perimeter Drive 
+Moscow, Idaho 83844
+Office: CNR 109
+Phone: 206-799-0149
+

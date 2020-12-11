@@ -1,0 +1,208 @@
+---
+title: "WST Pop Model: von Bertalanffy Growth Model (VBGM)"
+output:
+   html_document:
+     df_print: paged
+     toc: true
+   html_notebook: default
+---
+
+```{r setup, include=FALSE}
+
+# knitr::opts_chunk$set()
+knitr::opts_knit$set(root.dir = "~/Rprojects/SturgeonPopModel/")
+
+# ----
+# Created: 09-Feb-2018
+# Author:  J. DuBois
+# Contact: jason.dubois@wildlife.ca.gov
+# Purpose: this file contains code developed by S. Blackburn (Univ. of Idaho) &
+#          're-coded' some by me (J. DuBois) in an effort to understand better & 
+#          perhaps automate processes and methods used by S. Blackburn (SB)
+# OrigR:   see 'VBGM.txt' file
+
+```
+
+###Background
+Most important, I want to understand how S. Blackburn (Univ. of Idaho; SB) took raw CDFW data, and then created dataframes (or other data types) to 'feed' the model. This is an important first-step towards understanding the model. Herein I explore how SB used von Bertalanffy growth models (VBGM) in the model (J. DuBois, 09-Feb-2018; see original SB file `VBGM.txt`).
+
+###Data
+SB loads Excel file `BCLA.xlsx`, which contains fork length (fl) and age data fields. SB assigns loaded data to variable `wst`. (I saved this file as `.csv` for convenience of loading.)
+
+```{r load-data}
+
+wst <- read.csv(file = "blackburn_code/BCLA.csv", header = TRUE)
+summary(wst)
+
+```
+
+Simply, SB plots fork length as a function of age to examine length-at-age.
+
+```{r plot-len_age}
+
+# formatting from SB not included here
+plot(fl ~ age, data = wst)
+
+```
+
+###Create VB growth function
+Using `vbFuns()` in package `FSA`, SB creates a 'typical' von Bertalanffy growth function.
+
+```{r vb-fun, eval=TRUE}
+
+vb <- FSA::vbFuns(param = "Typical", msg = TRUE)
+vb
+
+```
+
+Generate starting values for VBGM using `vbStarts()`.
+
+```{r vb-starts}
+
+# automatic methods
+wst_vbs <- FSA::vbStarts(
+  fl ~ age,
+  data = wst,
+  type = "Typical",
+  plot = TRUE
+)
+
+# ... or manual method
+wst_vbs <- FSA::vbStarts(
+  fl ~ age,
+  data = wst,
+  type = "Typical",
+  plot = TRUE,
+  fixed = list(Linf = 160, K = 0.3, t0 = 0)
+)
+
+```
+
+###Fit VBGM to data
+Using `nls()` and `vb()` fit growth model to data.
+
+```{r fit-vbgm}
+
+wst_vbf <- stats::nls(
+  fl ~ vb(t = age, Linf = Linf, K = K, t0 = t0),
+  data = wst,
+  start = wst_vbs
+)
+
+# look at residual plot
+FSA::residPlot(wst_vbf)
+
+# extract results
+summary(wst_vbf)
+
+summary(wst_vbf, correlation = TRUE)
+wst_vbc <- coef(wst_vbf)
+cbind(Est = wst_vbc, confint(wst_vbf))
+
+```
+
+###Bootstrap estimates of uncertainty
+Using `nlsBoot()` from `nlstools` package, get confidence intervals.
+
+```{r boot-strap}
+
+wst_vbb <- nlstools::nlsBoot(wst_vbf, niter = 1000)
+
+str(wst_vbb)
+FSA::headtail(wst_vbb$coefboot)
+cbind(EST = wst_vbc, confint(wst_vbb, plot = TRUE, rows = 1, cols = 3))
+
+```
+
+####Predictions
+
+So the results below are saying a White Sturgeon age 9 has a fork length of 101.5 with 95% CI of 100.95 to 102.07, yes?
+
+```{r pred-vbb}
+
+ageX <- 9
+predict(wst_vbf, newdata = data.frame(age = ageX))
+
+wst_vbbp <- apply(wst_vbb$coefboot, MARGIN = 1, FUN = vb, t = ageX)
+
+c(
+  pred = predict(wst_vbf, data.frame(age = ageX)),
+  quantile(wst_vbbp, probs = c(0.025, 0.975))
+)
+
+```
+
+not quite sure what's going on in this section lines 74:86 but I think SB is adding some CIs to the predictions.
+
+SB is plotting fl ~ age and then adds predicted curve (I think)
+
+```{r plot-pred}
+
+clrs <- FSA::col2rgbt(col = c("black", "blue"), transp = 5/20)
+
+# plot fl ~ age with curve added
+plot(
+  formula = fl ~ age,
+  data = wst,
+  pch = 19,
+  col = clrs[1]
+)
+curve(
+  vb(t = x, wst_vbc),
+  from = 1, to = 30, n = 500,
+  lwd = 2,
+  col = clrs[2],
+  add = TRUE
+)
+
+# predict length from ages 1 to 50 years
+nd <- c(1:50)
+predict(wst_vbf, data.frame(age = nd))
+
+# plot(x = nd, y = predict(wst_vbf, data.frame(age = nd)))
+
+```
+
+###Questions
+1. From where did the data in `BCLA.xlsx` come?  
+   *374 fish from CDFW plus back calculated, used to back calculate young and old fish*
+2. Parameters from this VBGM are used in the exploitation rate ($\mu$) estimation, correct? If so, which final `Linf`, `K`, and `t0` were used?  
+   *yes, correct, Linf = 380, k = 0.027, t0 = -2.3*
+3. In the manual method, were `Linf = 160`, `K = 0.3`, `t0 = 0` exploratory? Or did these values come from literature or an output?  *just exploratory*
+
+Below is me noodling...
+
+```{r noodling, eval=TRUE}
+
+library(ggplot2)
+
+# me noodling 14-Feb-2018
+test <- lapply(1:1000, FUN = function(i) {
+  len <- vb(
+    t = 1:50,
+    Linf = wst_vbb$coefboot[i, "Linf"],
+    K = wst_vbb$coefboot[i, "K"],
+    t0 = wst_vbb$coefboot[i, "t0"]
+  )
+  
+  # output
+  data.frame(
+    age = 1:50,
+    fl = len,
+    group = as.character(i)
+  )
+})
+
+ggplot(
+  data = do.call(what = rbind, args = test),
+  mapping = aes(x = age, y = fl, group = group)
+) +
+  geom_line(alpha = 1/10, linetype = 2, colour = "steelblue")
+
+```
+
+<a href="#top">return to top</a>
+
+----
+ran: `r Sys.time()`  
+CDFW, Sportfish unit  

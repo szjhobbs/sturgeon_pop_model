@@ -1,0 +1,78 @@
+##################################
+## Mortality 
+##################################
+
+## S. Blackburn: blac2622@vandals.uidaho.edu
+## Using Chapman-Robson estimator with peak plus one criterion to calculate S (survival) and Z (instantanous total mortality rate)
+## M is instantaneous natural mortality 
+## Code sourced from Ogle 2016
+
+##############################
+### Initital preparation  
+###############################
+
+# Clear console and global environment
+rm(list = ls())
+cat("\014")     # or ctrl-L in RStudio
+
+# load libraries 
+library(FSA)
+library(car)      # Before dplyr to reduce conflicts with MASS
+library(dplyr)
+library(magrittr)
+library(Rcapture)
+
+##############################
+### CDFW WST 2014-2016 
+###############################
+# NOT adjusted data for trammel-net selectivity 
+
+all <- data.frame(age=3:19,ct=c(33, 38, 80, 111, 158, 179, 132, 68, 46, 25, 48, 24, 35, 2, 20, 3, 4)) 
+plot(log(ct)~age,data=all,
+     xlab="Age (yrs)",ylab="Log Catch",pch=19) # peak at 8 
+
+# Chapman Robson
+thr <- chapmanRobson(ct~age, data = all, ages2use = 9:19)
+plot(thr)
+cbind(summary(thr), confint(thr))
+
+# Chapman Robson
+thr <- chapmanRobson(ct~age, data = all, ages2use = 3:19) # not peak plus one; violoates assumption of CR estimator; just checking how Z changes
+plot(thr)
+cbind(summary(thr), confint(thr))
+
+# Catch Curve 
+thcc <- catchCurve(ct~age, data = all, ages2use = 9:19)  # violoates assumption of constant recruitment; do not use!
+cbind(summary(thcc), confint(thcc))
+
+thcc.wt <- catchCurve(ct~age, data = all, ages2use = 9:19, use.weights = T)
+cbind(summary(thcc.wt), confint(thcc.wt))
+
+##################################
+### Corrected CDFW WST 2014-2016  
+##################################
+# adjusted data for trammel-net selectivity 
+
+select <- data.frame(age=3:19,ct=c(45, 53, 128, 122, 164, 181, 136, 72, 52, 34, 92, 55, 105, 7, 91, 21, 66))                                  
+plot(log(ct)~age,data=select,
+     xlab="Age (yrs)",ylab="Log Catch",pch=19) # peak at 8 
+
+# Chapman Robson
+thr <- chapmanRobson(ct~age, data = select, zmethod = c("Hoenigetal"), ages2use = 9:19) # correct for overdisperson 
+plot(thr)
+cbind(summary(thr), confint(thr))
+
+# Weighted Catch Curve 
+thcc.wt <- catchCurve(ct~age, data = select, ages2use = 9:19, use.weights = T)
+cbind(summary(thcc.wt), confint(thcc.wt))
+
+################################
+# Meta-Analytic estimates of M
+################################
+# Estimate M is highly correlated with various life histories and abiotic factors 
+# Can estimate M using pragmatic alteratives to Chapman-Robson and catch curve; but use caution (Then et al. 2015)
+# Just use average of 4 listed methods as a means of comparasion to mortality estimates derived from Chapman-Robson above 
+
+metaM("PaulyL", Linf = 381.12, K = 0.027234, T = 15.96)          # T = average water temp in Suisun Bay
+( tmp <- c("PaulyL", "HoenigOF", "tmax", "PaulyLNoT") )
+( metaM(tmp, Linf = 381.12, K = 0.027234, T= 15.96, tmax = 50) ) # tmax = max age of the stock 

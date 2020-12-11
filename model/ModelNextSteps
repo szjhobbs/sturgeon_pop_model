@@ -1,0 +1,39 @@
+
+15-May-2018
+
+Sent to Joe Ferreira "model-current.html". Hope to discuss with him shortly his perspective about the model.
+
+09-Mar-2018
+
+Outlining steps to fully understand model & to automate (or) streamline Shannon's code
+
+Aside from the 4 datasets (below) are there any others that 'feed' the model?
+1. initial_age_dist
+2. prob_survival_obs
+3. prob_spawn
+4. number_eggs
+
+Understand how to calculate exploitation (mu) adjusting for non-reporting, tag loss, and tagging mortality. Also, employ VBGM to apply appropriate inclusion or cutoff for fish that could be harvested (i.e., legal size) during the year at large post tagging.
+
+Develop ALKEY from n=374 aged fish. Since these fish were from the study period (i.e., 2014-2016) I assume these fish are not passed into the ALKEY, but rather added to the total post application of key to non-aged fish.
+
+Develop an easy way to set survival accross ages using Chapman-Robson (peak+1); this gets at the data in prob_survival_obs.
+
+Understand which packages --- if any --- Shannon used are an absolute must. That is, it would be way too tedious to write my own code. If such packages are needed, maybe it's time to employ Packrat?
+
+Figure out the best way to write custom functions for this model; perhaps even think about containing everything in a package...might be easier. Remember, I need to apply this to Striped Bass too!
+
+Make sure I am clear on which data came from the literature and give citations accordingly.
+
+Develop a clear roadmap of the flow needed to get to final figure (output; lambda ~ exploitation)
+
+Figure out a good way to employ Millar's code for gear selectivity.
+
+Plotting: Intermediate steps? Final output? (Nice base R or ggplot?)
+
+
+
+
+
+
+

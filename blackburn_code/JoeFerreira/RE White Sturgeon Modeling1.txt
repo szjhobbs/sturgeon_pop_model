@@ -1,0 +1,263 @@
+From:	Ferreira, Joe R.@Wildlife
+Sent:	Monday, April 16, 2018 8:36 AM
+To:	Gingras, Marty@Wildlife
+Cc:	DuBois, Jason@Wildlife; Kurth, Ryon@Wildlife; Nelson, Jonathan@Wildlife
+Subject:	RE: White Sturgeon Modeling
+
+Marty, thank you for the response and clarification.  
+
+Some more questions on slides #15,17 and 20  (see below in blue)
+
+Regards
+
+Joe
+
+-----Original Message----- 
+From: Gingras, Marty@Wildlife  
+Sent: Thursday, April 12, 2018 5:19 PM 
+To: Ferreira, Joe R.@Wildlife <Joe.R.Ferreira@wildlife.ca.gov> 
+Cc: DuBois, Jason@Wildlife <Jason.DuBois@wildlife.ca.gov>; Kurth, Ryon@Wildlife 
+<Ryon.Kurth@Wildlife.ca.gov>; Nelson, Jonathan@Wildlife <Jonathan.Nelson@wildlife.ca.gov> 
+Subject: RE: White Sturgeon Modeling
+
+Hi Joe,
+
+Thanks for taking a gander and and posing questions about the presentation.  Jason hasn't been able to 
+work full speed on stringing together the components of Shannon's model so it'd be easiest for you to 
+look into, but he's making great progress and it should be soon.  
+
+W/regard to your comments and questions on the presentation:
+
+Slide 5:  
+It is relative abundance.  
+See this for the method:  https://nrm.dfg.ca.gov/FileHandler.ashx?DocumentId=26542
+Data is from our Bay Study otter trawl
+It is based on a consistent process over the entire time period presented.
+
+Slide 6:
+Agreed, it's problematic that we issue more tags for fish than there are fish in the legal-sized population.  
+However, the harvest is 'only' upwards of 15% of that population a year because the fish are relatively 
+hard to come by.  I write ''only' because that's a huge fraction for this population.
+
+Slide 8: 
+Data for only a couple of years is sufficient, because the demographics and fishery do not change very 
+fast. 
+It's enough to study Suisun Bay, because the fish move around a lot and come through there to spawn in 
+(mostly) the Sacramento.
+
+Slide 9:  
+Trammel netting is the best way to sample.  Hook and line is grossly inefficient and selective.  There is no 
+other way.
+We'd love to do more, but sampling intensity and locations are what can be managed and the 
+interpretation is pretty cut-and-dried.  We also have multiple lines of evidence for much of it and it's all 
+consistent.
+The 87 cm criteria is what we've decided is reasonable, based on what we tag-return data is most 
+important for (i.e., estimating exploitation).
+
+Slide 11:  
+It's old data but all that's available and should be fine.  We'd like to re-do the field study.  We'd like to 
+run the model while varying estimated maturity.  There are more than eight points, and I'm not sure 
+why she showed it that way.  Here is the paper:  
+ftp://ftp.wildlife.ca.gov/Adult_Sturgeon_and_Striped_Bass/White%20sturgeon%20reproductive%20con
+dition%20California%201996.pdf
+
+Slide 12:  Using data from the Columbia should be fine.  'Fish is fish' in this regard, where volume is 
+reliably proportional to length.
+
+Slide 14:  Pretty sure they did not treat it as a point estimate.  There is though little survival data to be 
+had.
+
+Slide 15:  I'm not sure what you means "insufficient info to judge the modeling process".  She ran many 
+more scenarios, but I think reporting these is sufficient. 
+what I am referring to is that on this slide, it shows covariates (ie ingredients) to an output (ie growth I 
+presume), but there is no telling how these covariates are related in a functional form to the output.   Its 
+like showing me that they used flour, eggs and milk and the output was a cake, but I have not idea how 
+those ingredients were used to create the cake.
+
+Slide 17:   Taking a fin ray is pretty violent, so we only took a subset.  We can use an age-length key of 
+other model to assign ages, but that would be 'circular' for the present purposes.   
+A sample fin rays from 374 sturgeons were used to estimate the age, but the remaining 636 no fin rays 
+were taken, so what method was used to estimate the age for those 636 sturgeons.  Your response says 
+you can used ALK.  I was asking if that is what was used or what method was used to estimate age for 
+the 636 that did not have fin rays taken?
+
+Slide 18:  Yes, that's the entire l-f distribution.
+
+Slide 19:  Those are modeled ages.
+
+Slide 20:  Agreed.  There is only so much data and there are very (very) few big fish.  She tinkered with 
+this.  From a management perspective, I believe the difference in the trends and the absolute values is 
+unimportant.
+I understand that data is limited; my only point is that since data is scarce in the extreme (large and 
+small) that can generate wildly different models depending on what is available there.
+
+Slide 24:  Correct about tainting due to scoff-law anglers.  It is what it is.  The values are plausible and we 
+account for the issues when interpreting them.
+
+Slide 26:  Yes, we hope you will look at the specific models. You are right about what it is though.
+
+Take care
+
+Marty Gingras
+BDR-IEP Operations Program Manager
+California Department of Fish and Wildlife Bay Delta Region
+2109 Arch-Airport Road, Suite 100
+Stockton, California  95206
+
+Phone (209) 234-3486
+Phone (831) 915-6359 (cell)
+email   marty.gingras@wildlife.ca.gov
+
+SaveOurWater.com · Drought.CA.gov
+________________________________________
+From: Ferreira, Joe R.@Wildlife
+Sent: Wednesday, April 11, 2018 12:47 PM
+To: Gingras, Marty@Wildlife
+Cc: DuBois, Jason@Wildlife; Kurth, Ryon@Wildlife; Nelson, Jonathan@Wildlife
+Subject: RE: White Sturgeon Modeling
+
+Marty
+
+Attached is some notes I made on the attachment you sent me.  In general, I don’t have enough info to 
+comment on the modeling work they did as the file you gave me is very high level.
+
+If you have more details on the modeling process I may be able to make better comments
+
+
+Regards
+
+Joe
+
+-----Original Message-----
+From: Ferreira, Joe R.@Wildlife
+Sent: Tuesday, March 20, 2018 3:23 PM
+To: Gingras, Marty@Wildlife <Marty.Gingras@wildlife.ca.gov>
+Cc: DuBois, Jason@Wildlife <Jason.DuBois@wildlife.ca.gov>; Kurth, Ryon@Wildlife 
+<Ryon.Kurth@Wildlife.ca.gov>
+Subject: RE: White Sturgeon Modeling
+
+Ok Marty
+Lets connect ( as you say in a week or two)
+
+
+Regards
+
+Joe
+
+-----Original Message-----
+From: Gingras, Marty@Wildlife
+Sent: Tuesday, March 20, 2018 9:50 AM
+To: Ferreira, Joe R.@Wildlife <Joe.R.Ferreira@wildlife.ca.gov>
+Cc: DuBois, Jason@Wildlife <Jason.DuBois@wildlife.ca.gov>
+Subject: RE: White Sturgeon Modeling
+
+Hi Joe,
+
+DFW let out a contract with University of Idaho (a MS student and her professor) to work with us to 
+model the population trajectory of white sturgeon.  The model uses some data from the literature and 
+lots of our own data.  The contract is about to end, the student is about to finish her thesis, and we are 
+presenting some aspects of the work.  My hope is that you'll take a look at the model and engage us --- 
+Jason on the very-technical stuff --- about your ideas and any concerns about the model.
+
+The student is very busy and the model is not organized for easy review, but Jason has been working to 
+tidy it up for our purposes.  If you want took take a look at what Jason has before he's done with it, feel 
+free and encouraged.  Otherwise, let's postpone another week or two.  Either way, I've attached the 
+most-recent presentation so the three of us can talk about it when you are ready/interested.
+
+The model shows that the if recruitment patterns and fishing stays as they have been for about 40 years, 
+then (1) population trajectory is downward and (2) cohorts being harvested now will be greatly 
+diminished.  Neither of those are good news or surprising.
+
+Thanks
+
+Marty Gingras
+BDR-IEP Program Manager
+California Department of Fish and Wildlife Bay Delta Region
+2109 Arch-Airport Road, Suite 100
+Stockton, California 95206
+
+Phone (209) 234-3486
+Phone (831) 915-6359
+email marty.gingras@wildlife.ca.gov
+
+Every Californian should conserve water.  Find out how at:
+
+SaveOurWater.com · Drought.CA.gov
+
+
+-----Original Message-----
+From: Ferreira, Joe R.@Wildlife
+Sent: Tuesday, March 20, 2018 8:02 AM
+To: Gingras, Marty@Wildlife <Marty.Gingras@wildlife.ca.gov>
+Subject: RE: White Sturgeon Modeling
+
+Marty
+
+Let me know when it would be a good time for you to talk about the request you are making.
+
+Best for me is either tomorrow 9-11, or Thursday 9-11 or 1-3
+
+Regards
+
+Joe
+
+-----Original Message-----
+From: Gingras, Marty@Wildlife
+Sent: Monday, March 12, 2018 11:12 AM
+To: Ferreira, Joe R.@Wildlife <Joe.R.Ferreira@wildlife.ca.gov>; Kurth, Ryon@Wildlife 
+<Ryon.Kurth@Wildlife.ca.gov>
+Subject: RE: White Sturgeon Modeling
+
+Thank you Gentlemen.
+
+Marty Gingras
+BDR-IEP Program Manager
+California Department of Fish and Wildlife Bay Delta Region
+2109 Arch-Airport Road, Suite 100
+Stockton, California 95206
+
+Phone (209) 234-3486
+Phone (831) 915-6359
+email marty.gingras@wildlife.ca.gov
+
+Every Californian should conserve water.  Find out how at:
+
+SaveOurWater.com · Drought.CA.gov
+
+
+
+-----Original Message-----
+From: Ferreira, Joe R.@Wildlife
+Sent: Monday, March 12, 2018 11:08 AM
+To: Kurth, Ryon@Wildlife <Ryon.Kurth@Wildlife.ca.gov>
+Cc: Gingras, Marty@Wildlife <Marty.Gingras@wildlife.ca.gov>
+Subject: Re: White Sturgeon Modeling
+
+Sure no problem.
+
+I will be on vacation this week, so when I get back
+
+________________________________________
+From: Kurth, Ryon@Wildlife
+Sent: Friday, March 9, 2018 8:51:57 AM
+To: Ferreira, Joe R.@Wildlife
+Subject: White Sturgeon Modeling
+
+Hey Joe,
+
+Marty Gingras would like to talk to you about working on white sturgeon modeling.  Do you have time to 
+help out?  If not, let's talk about your workload and see if we can find some time.  Marty's contact info is 
+below.  Please contact him to discuss the details of what he is asking for.
+
+Marty Gingras
+Phone (209) 234-3486
+Phone (831) 915-6359
+email   marty.gingras@wildlife.ca.gov
+
+Kind regards,
+Ryon Kurth
+Senior Environmental Scientist Supervisor Anadromous Fishes Conservation and Management Program 
+California Department of Fish & Wildlife / Fisheries Branch
+O: (916) 445-3181 / M: (916) 531-3191
+
+

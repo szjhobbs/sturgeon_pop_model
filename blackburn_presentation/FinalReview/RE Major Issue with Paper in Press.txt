@@ -1,0 +1,155 @@
+From:	Quist, Michael (mcquist@uidaho.edu) <mcquist@uidaho.edu>
+Sent:	Thursday, August 22, 2019 9:40 AM
+To:	Kelly, John@Wildlife; DuBois, Jason@Wildlife
+Cc:	Kratville, Daniel@Wildlife; shannon.blackburn@pnnl.gov; Zac Jackson
+Subject:	RE: Major Issue with Paper in Press
+Attachments:
+	9_Blackburn_et_al_WHST_PopDyn_clean_for_journal_edited_per_CDFW_concerns.doc
+x
+
+Hey Jason and John,
+
+Sorry for the delay on this.  Please the attached revised manuscript.  As you will see, we 
+have removed all of the “strong” language associated with overfishing and population 
+declines.  Any text that focuses on population declines and overfishing has been 
+tempered to acknowledge our uncertainty.  You will also notice that we did not add 
+extensive text on confidence intervals.  I’m not convinced such a discussion is 
+necessary.  Also, we need to minimize the number of changes since this manuscript has 
+already been reviewed extensively by all of the co-authors, and has been through journal 
+and USGS review processes.  Anyway, we hope you are happy with the edits—we really 
+do believe the revised version addresses Kevin’s concerns .  Given that NAJFM is 
+waiting on this paper, please give this a review ASAP and we’ll get it back into the 
+system.  As always, please let Shannon or I know if you have any questions, concerns, or 
+additional comments.
+
+Many thanks,
+Mike
+
+From: Kratville, Daniel@Wildlife <Daniel.Kratville@wildlife.ca.gov>  
+Sent: Monday, August 19, 2019 8:08 AM 
+To: Quist, Michael (mcquist@uidaho.edu) <mcquist@uidaho.edu>; shannon.blackburn@pnnl.gov; Zac 
+Jackson <zachary_jackson@fws.gov>; eic.najfm@gmail.com 
+Cc: Nelson, Jonathan@Wildlife <Jonathan.Nelson@wildlife.ca.gov>; Kelly, John@Wildlife 
+<John.Kelly@Wildlife.ca.gov>; DuBois, Jason@Wildlife <Jason.DuBois@wildlife.ca.gov>; Shaffer, 
+Kevin@Wildlife <Kevin.Shaffer@wildlife.ca.gov>; Erickson, Gregg@Wildlife 
+<Gregg.Erickson@wildlife.ca.gov>; Hobbs, James@Wildlife <James.Hobbs@wildlife.ca.gov> 
+Subject: RE: Major Issue with Paper in Press
+
+Thank you Michael, we understand that this is not the ideal way to go about this, and we should have 
+had better communication before this point. However, we have no choice in this situation. We will 
+gladly work with you on the language we have concerns with. Please work with Jason DuBois and John 
+Kelly directly, cc’d above.
+
+Dan
+
+
+
+****************************************************
+Daniel Kratville
+California Department of Fish and Wildlife
+Senior Environmental Scientist (Supervisor)
+830 S St
+Sacramento, CA 95811
+Office: 916-324-3613
+Mobile: 916-508-6553
+***************************************
+
+
+
+From: Quist, Michael (mcquist@uidaho.edu) <mcquist@uidaho.edu>  
+Sent: Friday, August 9, 2019 4:59 PM 
+To: Kratville, Daniel@Wildlife <Daniel.Kratville@wildlife.ca.gov>; shannon.blackburn@pnnl.gov; Zac 
+Jackson <zachary_jackson@fws.gov>; eic.najfm@gmail.com 
+Cc: Nelson, Jonathan@Wildlife <Jonathan.Nelson@wildlife.ca.gov>; Kelly, John@Wildlife 
+<John.Kelly@Wildlife.ca.gov>; DuBois, Jason@Wildlife <Jason.DuBois@wildlife.ca.gov>; Shaffer, 
+Kevin@Wildlife <Kevin.Shaffer@wildlife.ca.gov>; Erickson, Gregg@Wildlife 
+<Gregg.Erickson@wildlife.ca.gov>; Hobbs, James@Wildlife <James.Hobbs@wildlife.ca.gov> 
+Subject: Re: Major Issue with Paper in Press
+
+ 
+Hello all, I am currently traveling (just finished teaching a pop dynamics workshop for the state 
+of Utah) and saw this.  I think it's important to say that Shannon and I worked very closely with 
+CDFW at every step in this project, including drafting and editing the manuscript.  Working 
+closely with agencies is something I and my students take pride in.  I've never experienced 
+anything like this and, to be honest, I'm a little confused.  Having said that, I do not like the idea 
+of removing authors because, as stated above, they all contributed greatly to the work.  I think 
+the best option is to temper the language as suggested.  That should be quite easy to do.  I have 
+contacted NAJFM with the request to "pause" the paper (assuming that can still be done).  I 
+corresponded with the EIC and he also asked the staff to hit the pause button.  Shannon is going 
+to work on tempering the language and we should have something ready by next week.  My 
+apologies for any confusion, but CDFW did contribute to all stages of this work including review 
+of the manuscript. 
+ 
+Take care, 
+Mike 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+Michael C. Quist 
+Assistant Unit Leader-Fish and Associate Professor 
+USGS-Idaho Coop Fish and Wildlife Research Unit 
+Department of Fish and Wildlife Sciences 
+University of Idaho 
+875 Perimeter Dr.  MS 1141 
+Moscow, Idaho 83844-1141 
+Office: (208) 885-4064 
+Cell:  (208) 301-8285 
+FAX:  (208) 885-9080 
+http://webpages.uidaho.edu/quistlab/index.html 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+From: Kratville, Daniel@Wildlife <Daniel.Kratville@wildlife.ca.gov> 
+Sent: Friday, August 9, 2019 4:17:42 PM 
+To: eic.najfm@gmail.com <eic.najfm@gmail.com>; Quist, Michael (mcquist@uidaho.edu) 
+<mcquist@uidaho.edu>; shannon.blackburn@pnnl.gov <shannon.blackburn@pnnl.gov> 
+Cc: Nelson, Jonathan@Wildlife <Jonathan.Nelson@wildlife.ca.gov>; Kelly, John@Wildlife 
+<John.Kelly@Wildlife.ca.gov>; DuBois, Jason@Wildlife <Jason.DuBois@wildlife.ca.gov>; Shaffer, 
+Kevin@Wildlife <Kevin.Shaffer@wildlife.ca.gov>; Erickson, Gregg@Wildlife 
+<Gregg.Erickson@wildlife.ca.gov>; Hobbs, James@Wildlife <James.Hobbs@wildlife.ca.gov> 
+Subject: Major Issue with Paper in Press 
+ 
+Hi Shannon and Daniel,
+       I am the Supervisor for the Statewide Sturgeon Program with the California Department of Fish 
+and Wildlife.  We need to discuss a critical issue with a paper that is currently in Press: Population 
+Dynamics and Evaluation of Management Scenarios for White Sturgeon in the Sacramento–San Joaquin 
+River Basin. Two of the co-authors are from CDFW, however one retired during the review process for 
+this paper and it is not clear if CDFW was able to give comments on a specific aspect of this publication. 
+Specifically, there is concern with the following statement and the general conclusion that it presents, 
+within the paper. 
+ 
+“White Sturgeon in the SSJ exhibited fast growth, high rates of mortality, and high levels of exploitation, 
+and the population appeared to be declining. The size structure and age structure of the population 
+suggest that the White Sturgeon population in the SSJ is overexploited.” 
+ 
+       Based on CDFW’s current understanding of the paper and the model, the confidence intervals 
+around the population estimate of ? are quite large. The concern with the paper as written is that the 
+confidence intervals in almost all cases incorporate values both greater and less than 1.  Because of that, 
+even though the estimates of ? may suggest population declines, it’s hard to make that definitive 
+statement and be confident it is accurate.  Statistically, it’s possible that the estimates may be much 
+better (or much worse) than reported. With this understanding of the model outputs, the quoted 
+statement above becomes problematic. As currently written, CDFW is unable to maintain co-authorship 
+and would need to have authors names and or affiliations removed from the paper. If the CDFW is to 
+remain as listed authors of this paper we need to have a discussion about altering this language. We 
+have no issue with the empirical outputs or construction of the model, however, we disagree with the 
+assertion that this model clearly indicates that the population is overexploited. The CDFW strives to be 
+up front about the reality of fish population modeling and what the outputs of those models mean. We 
+would like to have a discussion about this and believe there is an alternate solution by changing the 
+conclusion from the definitive of overexploitation to a discussion about the size of the confidence 
+intervals and what exactly that may mean. I am happy to arrange a conference call with everyone and 
+begin this discussion.
+ 
+I know this comes as a late request, but it is imperative that we can find a resolution to this issue quickly 
+to minimize delays in the publication process. Thank for you understanding in this matter. 
+ 
+Sincerely,
+ 
+Daniel Kratville
+ 
+****************************************************
+Daniel Kratville
+California Department of Fish and Wildlife
+Senior Environmental Scientist (Supervisor)
+830 S St
+Sacramento, CA 95811
+Office: 916-324-3613
+Mobile: 916-508-6553
+***************************************
+ 

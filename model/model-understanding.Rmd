@@ -1,0 +1,160 @@
+---
+title: "Model Understanding"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_knit$set(root.dir = "~/RProjects/SturgeonPopModel/")
+
+```
+
+
+Herein, I attempt to understand the various components of S. Blackburn's model. First step is to understand how she created the dataframes (see base model) as the starting data that feed the model.
+
+I'll start with `initial_age_dist`, an age frequency distribution scaled to assumed abundance of 48K. The `catch_at_age` dataframe below is from CDFW catch 2014-2016. Fish were either aged directly (through fin rays) or based on length using age-length key (**need to nail this down with S. Blackburn**). For now, I'll use `catch_at_age` as the starting point, but at some point I'll generate this dataframe from the raw data.
+
+```{r catch-age}
+
+catch_at_age <- data.frame(
+  age = 3:19,
+  ct = c(
+    33, 38, 80, 111, 158, 179, 132, 68,
+    46, 25, 48, 24, 35, 2, 20, 3, 4
+  )
+)
+
+# get total catch 2014-2016
+tot_catch <- sum(catch_at_age$ct)
+
+```
+
+Total catch (n=`r tot_catch`) is in the ballpark. I get either n=1000 or n=1001 looking at the raw catch data. Need to look into this further (28-Feb-2018).
+
+We next need to scale by abundance (~48K). First we get the proportion of catch at each age.
+
+```{r scaled-abund}
+
+initial_abund <- 48000
+
+prop_at_age <- with(data = catch_at_age, expr = {
+  ct / sum(ct)
+})
+
+# scaled by abundance
+catch_at_age$AbundScaled <- prop_at_age * initial_abund
+
+```
+
+Now we apply `lm()` taking log(catch). Applying `lm()` to scaled catch per assumed order of methods (i.e., scaled, `lm()`, then predicting ages 1-2 from model, then dividing by half for females). But age 1 and age 2 values differ greatly (see plot with red regression line (slope = 1, int = 0) below).
+
+```{r lin-mod}
+
+# model
+mod <- lm(log(AbundScaled) ~ age, data = catch_at_age)
+summary(mod)
+
+# mean(exp(mod[["residuals"]])^2)
+
+plot(log(AbundScaled) ~ age, data = catch_at_age)
+# plot(AbundScaled ~ age, data = catch_at_age)
+abline(mod)
+
+pred <- exp(predict(object = mod, newdata = list(age = c(1:2))))
+
+# for comparison using S. Blackburn's data (ages 1-19)
+sb_data <- c(
+  3192.023, 2874.605, 743.4951, 919.6688, 1887.2559, 2643.7050,
+  3778.5699, 4249.9032, 3177.8537, 1654.6577, 1068.1057, 597.0728,
+  1214.5035, 561.4314, 858.8469, 38.1710, 439.7614, 148.104767, 148.1116858
+)
+
+# plot(sb_data)
+
+plot(x = sb_data, y = c(pred, catch_at_age$AbundScaled) / 2)
+abline(a = 0, b = 1, col = 2)
+
+```
+
+##Survival rates (probability) by age
+
+For my own edification, I created a Chapman-Robson function based on Ricker p. 31).
+
+```{r chap-rob_func}
+
+# chapman-robson method of survival (Ricker p. 31, eq. 2.5)
+
+ChapRob <- function(ages, n, N0 = 2) {
+  
+  coded_age <- rep(NA, times = length(ages))
+  coded_age[ages >= N0] <- seq_along(ages[ages >= N0]) - 1
+  
+  
+  TT <- sum(coded_age * n, na.rm = TRUE)
+  
+  N <- sum(n[ages >= N0])
+  
+  S <- TT / (sum(n[ages >= N0]) + (TT - 1))
+  
+  samp_var <- S * (S - ((TT - 1) / (N + TT - 2)))
+  
+  se <- sqrt(samp_var)
+  
+  # function output
+  list(
+    TT = TT,
+    N = N,
+    S = S,
+    SE = se,
+    Z = -log(S)
+  )
+}
+# end ChapRob
+
+
+```
+
+Getting same results as `FSA::chapmanRobson()` but neither are reconciling with S. Blackburn data in `prob_survival_obs`. Plus, not sure how S. Blackburn got age-specific survival.
+
+```{r chap-rob_res}
+
+ChapRob(ages = catch_at_age$age, n = catch_at_age$ct, N0 = 9)
+
+# c(pred[2], catch_at_age$AbundScaled)
+
+FSA::chapmanRobson(ct ~ age, data = catch_at_age, ages2use = 9:19)
+
+# -log(0.70603015)
+
+```
+
+##Probability of Reproduction
+
+From Chapman et al. 1996, I copied and saved Table 2 (females). S. Blackburn ran logistic regression on these data (I believe) to estimate probability of reproduction.
+
+Not reproducing S. Blackburns results.
+
+```{r chap}
+
+chapman_data <- read.csv(file = "data/Chapman96Tbl2Female.csv", header = TRUE)
+
+# assumed ages
+chapman_data$ages <- 8:19
+
+mod_por <- glm(
+  formula = Group3 ~ ages,
+  data = chapman_data,
+  subset = ages > 9,
+  family = gaussian(link = "identity")
+)
+
+# summary(mod_por)
+
+predict(object = mod_por, newdata = list(ages = 10:19))
+
+
+```
+
+

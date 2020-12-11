@@ -1,0 +1,28 @@
+From:	Blackburn, Shannon (blac2622@vandals.uidaho.edu) 
+<blac2622@vandals.uidaho.edu>
+Sent:	Friday, March 23, 2018 3:16 PM
+To:	DuBois, Jason@Wildlife
+Subject:	more stuff
+Attachments:	ALK_cdfw.R; bacCalall.R; vonB_BCLA.R; 
+CA_FinRayInventory_Ageing_Blackburn.xlsx; size_selective_data.xlsx; 
+corrected_transient_midfecund_current.R
+
+Follow Up Flag:	Follow up
+Flag Status:	Flagged
+
+More things. 
+
+Included is the messy R code for the updated model (e.g., transient dynamics, “mid-fecundity” [15% of 
+mature females spawning]) for the current harvest slot length limit. Ideally, I will work on the R code this 
+weekend and make it more usable. 
+
+Shannon Blackburn
+M.S. graduate student
+University of Idaho
+College of Natural Resources
+Fish and Wildlife Sciences
+875 Perimeter Drive 
+Moscow, Idaho 83844
+Office: CNR 109
+Phone: 206-799-0149
+

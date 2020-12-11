@@ -1,0 +1,7 @@
+"MinYear","MaxYear","Species","MinLen","MaxLen","LenType"
+1954,1989,"W,G",102,Inf,"total"
+1990,1990,"W,G",107,183,"total"
+1991,1991,"W,G",112,183,"total"
+1992,2006,"W,G",117,183,"total"
+2007,2012,"W",117,168,"total"
+2013,2017,"W",102,152,"fork"

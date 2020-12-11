@@ -1,0 +1,186 @@
+---
+title: "WST Pop Model: Mortality"
+output:
+   html_document:
+     df_print: paged
+     toc: true
+   html_notebook: default
+---
+
+```{r setup, include=FALSE}
+
+
+
+# ----
+# Created: 09-Feb-2018
+# Author:  J. DuBois
+# Contact: jason.dubois@wildlife.ca.gov
+# Purpose: this file contains code developed by S. Blackburn (Univ. of Idaho) &
+#          're-coded' by me (J. DuBois) in an effort to understand better & 
+#          perhaps automate processes and methods used by S. Blackburn (SB)
+# OrigR:   see 'mortality.txt' file
+
+```
+
+###Background
+Most important, I want to understand how S. Blackburn (Univ. of Idaho; SB) took raw CDFW data, and then created dataframes (or other data types) to 'feed' the model. This is an important first-step towards understanding the model. Herein I explore how SB estimated rates of survival, mortality, and instantaneous rates (J. DuBois, 09-Feb-2018; see original SB file `mortality.txt`).
+
+SB used Chapman-Robson estimator with peak plus one criterion to estimate S (survival) and Z (instantaneous total mortality). SB sourced code from Ogle 2016.
+
+SB used the R libraries below.  
+- library(FSA)  
+- library(car)  
+- library(dplyr)  
+- library(magrittr)  
+- library(Rcapture)  
+
+```{r load-libs, warning=FALSE, message=FALSE}
+
+library(FSA)
+library(car)
+library(dplyr)
+library(magrittr)
+# library(Rcapture)
+
+```
+
+###Data
+SB creates a dataframe called `all` with `age` & `ct` (presumably short for catch) fields. Catch data in `all` (herein named `catch_at_age`) have NOT been adjusted for trammel net (gear) selectivity.
+
+Ages (`age`) in `catch_at_age` are from 3 to 19. Catch (`ct`) is presumably count at each age from CDFW 2014-2016 trammel data. _Was an AL key was used to get ages or were these fish directly aged through finrays?_
+
+```{r age-catch}
+
+# create dataframe (renamed from all)
+catch_at_age <- data.frame(
+  age = 3:19,
+  ct = c(
+    33, 38, 80, 111, 158, 179, 132, 68,
+    46, 25, 48, 24, 35, 2, 20, 3, 4
+  )
+) 
+
+```
+
+SB plots `log(ct) ~ age` to look at peak catch (age 8 for these data). The resulting plot is a catch curve (below).
+
+```{r plt-age_catch}
+
+plot(log(ct) ~ age, data = catch_at_age)
+
+```
+
+###Employ Chapman-Robson
+Using `chapmanRobson()` in package `FSA`, SB creates and plots variable `thr`. We confirm (through arithmetic) `chapmanRobson()` returns values according to Ricker eqn 2.5 (pg. 31; S) and Ricker eqn page 29 (Z). The 'peak plus one' method assigns N~0~ (starting age) to the peak age + 1, in this case age 9.
+
+For comparison, SB re-runs (not shown here) `chapmanRobson()` using all ages (3-19). As SB states, this is *not* peak plus one and violates assumption of CR estimator.
+
+```{r run-cr}
+
+thr <- chapmanRobson(ct ~ age, data = catch_at_age, ages2use = 9:19)
+plot(thr)
+
+```
+
+####Catch Curve
+Using `catchCurve()` in package `FSA`, SB creates and plots variable `thcc`. SB states this "violates assumption of constant recruitment" and advises not to use. Reruns `catchCurve()` setting `use.weights` argument to `TRUE`, but this does not seem to change much, if at all.
+
+```{r run-cc}
+
+thcc <- catchCurve(ct ~ age, data = catch_at_age, ages2use = 9:19)
+plot(thcc)
+
+```
+
+###Data (corrected)
+In this section, SB adjusts catch data for trammel net (gear) selectivity. SB creates a similar dataframe (as `catch_at_age`; SB called this dataframe `select`) only `ct` appears to be adjusted. But how SB corrected for gear selectivity is not clear.
+
+```{r age-catch_c}
+
+# create dataframe (renamed from select; _c = corrected)
+catch_at_age_c <- data.frame(
+  age = 3:19,
+  ct = c(
+    45, 53, 128, 122, 164, 181, 136, 72,
+    52, 34, 92, 55, 105, 7, 91, 21, 66
+  )
+) 
+
+```
+
+and again plotting...peak still at age 8.
+
+```{r plt-age_catch_c}
+
+plot(log(ct) ~ age, data = catch_at_age_c)
+
+```
+
+and again employing `chapmanRobson()`...this time setting `"Hoenigetal"` to the argument `zmethod` to (presumably) correct for overdispersion as SB states. Results are similar to running on non-adjusted data, but S does increase by about 10%. Not sure if `"Hoenigetal"` made a difference.
+
+SB also reruns (not shown here) `catchCurve()` on adjusted catch data.
+
+```{r plt-cr_c}
+
+thr2 <- chapmanRobson(
+  ct ~ age,
+  data = catch_at_age_c,
+  zmethod = "Hoenigetal",
+  ages2use = 9:19
+)
+
+plot(thr2)
+
+```
+
+###Estimates of M
+Instantaneous natural mortality (M) is "highly correlated with various life histories and abiotic factors" - SB. SB uses `metaM()` to estimate M as an alternative approach to Chapman-Robson or catch curves.
+
+```{r estimate-M}
+
+Linf <- 381.12 # not sure where SB got this value
+K <- 0.027234  # not sure where SB got this value
+Temp <- 15.96  # average water temp in Suisun Bay
+tmax <- 50     # max age of the stock
+
+FSA::metaM(method = "PaulyL", Linf = Linf, K = K, Temp = Temp)
+
+```
+
+getting warning `Linf` "value seems unreasonable" and to make sure it's in centimeters.
+
+or...
+
+```{r estimate-M_alt}
+
+FSA::metaM(
+  method = c("PaulyL", "HoenigOF", "tmax", "PaulyLNoT"),
+  Linf = Linf,
+  K = K,
+  Temp = Temp,
+  tmax = tmax
+)
+
+```
+
+###Questions
+1. Was an AL key was used to get ages or were all these fish directly aged through finrays? 
+   *age-length key used from fish aged collected in CDFW survey (n=374 used in ALKEY)*
+2. How did SB correct for gear (trammel net) selectivity?  
+   *Millar and Fryer 1999 - Select Method 34 different length categories*
+3. How does `"Hoenigetal"` correct for overdispersion?  
+   *not sure, following what other studies had done*
+4. How were `Linf` and `K` derived? Obviously from VBGM but using what data? 
+   *back-calculated length at age CDFW data; Dahl-le method*
+5. Can we derive $M$ from `chapmanRobson()` results? Yes, I believe using $M = Z - F$, but we'll need $\mu$.  
+   *yes, need exploitation, using CRobson is better route*
+6. Raw data used to get `ct` (catch)? CDFW 2014-2016?  
+   *yes*
+7. Ultimately, Chapman-Robson Peak+1 was used to estimate $Z$ and $S$, correct? What about $M$?  
+   *correct for M you need exploitation*
+
+<a href="#top">return to top</a>
+
+----
+run: `r Sys.time()`  
+CDFW, Sportfish  
